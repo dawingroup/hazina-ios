@@ -1,0 +1,2 @@
+app_identifier("app.hazina.ios")
+# team_id and apple_id are set once HazinaCo's Apple Developer enrolment completes.

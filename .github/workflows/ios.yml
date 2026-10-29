@@ -1,0 +1,21 @@
+name: iOS
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # macOS minutes bill at 10x. Point IOS_RUNNER at a self-hosted Mac to avoid that.
+    runs-on: ${{ vars.IOS_RUNNER || 'macos-15' }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen
+      - run: xcodebuild test -scheme Hazina -destination 'platform=iOS Simulator,name=iPhone 16' | xcpretty || exit ${PIPESTATUS[0]}
